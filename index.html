@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Jadwal - SMK Negeri 1 Maluku Tengah</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            min-height: 100vh;
+            padding: 20px;
+            animation: gradientShift 15s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .grade-section {
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-header {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            padding: 20px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dropdown-header:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .dropdown-header.active {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .grade-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dropdown-icon {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top: none;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .dropdown-content.show {
+            max-height: 2000px;
+            padding: 20px;
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .class-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .class-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.6s ease;
+        }
+
+        .class-card:hover::before {
+            transform: scale(1);
+        }
+
+        .class-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.25);
+        }
+
+        .class-card.active {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(33, 150, 243, 0.3));
+            border-color: rgba(76, 175, 80, 0.6);
+        }
+
+        .class-card.active::after {
+            content: '✓ Tersedia';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(76, 175, 80, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .class-card.inactive {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .class-card.inactive::after {
+            content: 'Segera Hadir';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 193, 7, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .class-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .class-description {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .grade-title {
+                font-size: 1.4rem;
+            }
+
+            .class-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+            }
+
+            .class-card {
+                padding: 20px;
+            }
+
+            .class-name {
+                font-size: 1.2rem;
+            }
+
+            .dropdown-header {
+                padding: 15px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .class-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="https://smartkurikulum-center.github.io/" class="back-button">← Kembali ke SmartKurikulum Center</a>
+        
+        <div class="header">
+            <h1>📚 Portal Jadwal Pelajaran</h1>
+            <p>SMK Negeri 1 Maluku Tengah</p>
+        </div>
+
+        <!-- Kelas X -->
+        <div class="grade-section">
+            <div class="dropdown-header" onclick="toggleDropdown('grade10')">
+                <div class="grade-title">
+                    <span>🎓</span>
+                    <span>Kelas X (Sepuluh)</span>
+                </div>
+                <span class="dropdown-icon" id="icon-grade10">▼</span>
+            </div>
+            <div class="dropdown-content" id="grade10">
+                <div class="class-grid">
+                    <div class="class-card active" onclick="openSchedule('https://alexbahy-tech.github.io/jadwal-xmplb/')">
+                        <div class="icon">🎯</div>
+                        <div class="class-name">X MPLB</div>
+                        <div class="class-description">Manajemen Perkantoran dan Layanan Bisnis</div>
+                    </div>
+                    <div class="class-card active" onclick="openSchedule('https://alexbahy-tech.github.io/jadwal-xakl/')">
+                        <div class="icon">💼</div>
+                        <div class="class-name">X AKL</div>
+                        <div class="class-description">Akuntansi dan Keuangan Lembaga</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">🛍️</div>
+                        <div class="class-name">X PMS</div>
+                        <div class="class-description">Pemasaran</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">🚢</div>
+                        <div class="class-name">X ULP</div>
+                        <div class="class-description">Usaha Layanan Pariwisata</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">🌐</div>
+                        <div class="class-name">X TJKT 1</div>
+                        <div class="class-description">Teknik Jaringan Komputer dan Telekomunikasi</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">🌐</div>
+                        <div class="class-name">X TJKT 2</div>
+                        <div class="class-description">Teknik Jaringan Komputer dan Telekomunikasi</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">⚡</div>
+                        <div class="class-name">X TK 1</div>
+                        <div class="class-description">Teknik Ketenagalistrikan</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">⚡</div>
+                        <div class="class-name">X TK 2</div>
+                        <div class="class-description">Teknik Ketenagalistrikan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kelas XI -->
+        <div class="grade-section">
+            <div class="dropdown-header" onclick="toggleDropdown('grade11')">
+                <div class="grade-title">
+                    <span>🎓</span>
+                    <span>Kelas XI (Sebelas)</span>
+                </div>
+                <span class="dropdown-icon" id="icon-grade11">▼</span>
+            </div>
+            <div class="dropdown-content" id="grade11">
+                <div class="class-grid">
+                    <div class="class-card inactive">
+                        <div class="icon">🎯</div>
+                        <div class="class-name">XI MPLB</div>
+                        <div class="class-description">Manajemen Perkantoran dan Layanan Bisnis</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">💼</div>
+                        <div class="class-name">XI AKL</div>
+                        <div class="class-description">Akuntansi dan Keuangan Lembaga</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">🛍️</div>
+                        <div class="class-name">XI PMS</div>
+                        <div class="class-description">Pemasaran</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">🚢</div>
+                        <div class="class-name">XI ULP</div>
+                        <div class="class-description">Usaha Layanan Pariwisata</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">🌐</div>
+                        <div class="class-name">XI TJKT 1</div>
+                        <div class="class-description">Teknik Jaringan Komputer dan Telekomunikasi</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">🌐</div>
+                        <div class="class-name">XI TJKT 2</div>
+                        <div class="class-description">Teknik Jaringan Komputer dan Telekomunikasi</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">⚡</div>
+                        <div class="class-name">XI TK</div>
+                        <div class="class-description">Teknik Ketenagalistrikan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kelas XII -->
+        <div class="grade-section">
+            <div class="dropdown-header" onclick="toggleDropdown('grade12')">
+                <div class="grade-title">
+                    <span>🎓</span>
+                    <span>Kelas XII (Dua Belas)</span>
+                </div>
+                <span class="dropdown-icon" id="icon-grade12">▼</span>
+            </div>
+            <div class="dropdown-content" id="grade12">
+                <div class="class-grid">
+                    <div class="class-card inactive">
+                        <div class="icon">🎯</div>
+                        <div class="class-name">XII MPLB</div>
+                        <div class="class-description">Manajemen Perkantoran dan Layanan Bisnis</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">💼</div>
+                        <div class="class-name">XII AKL</div>
+                        <div class="class-description">Akuntansi dan Keuangan Lembaga</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">🛍️</div>
+                        <div class="class-name">XII PMS</div>
+                        <div class="class-description">Pemasaran</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">🚢</div>
+                        <div class="class-name">XII ULP</div>
+                        <div class="class-description">Usaha Layanan Pariwisata</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">🌐</div>
+                        <div class="class-name">XII TJKT</div>
+                        <div class="class-description">Teknik Jaringan Komputer dan Telekomunikasi</div>
+                    </div>
+                    <div class="class-card inactive">
+                        <div class="icon">⚡</div>
+                        <div class="class-name">XII TK</div>
+                        <div class="class-description">Teknik Ketenagalistrikan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown(gradeId) {
+            const content = document.getElementById(gradeId);
+            const icon = document.getElementById('icon-' + gradeId);
+            const header = content.previousElementSibling;
+            
+            content.classList.toggle('show');
+            icon.classList.toggle('rotated');
+            header.classList.toggle('active');
+        }
+
+        function openSchedule(url) {
+            window.location.href = url;
+        }
+
+        // Add stagger animation to sections
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.grade-section');
+            sections.forEach((section, index) => {
+                section.style.animation = `fadeInUp 0.6s ease ${index * 0.2}s both`;
+            });
+        });
+    </script>
+</body>
+</html>
