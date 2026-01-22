@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Jadwal - SMKN 1 Maluku Tengah</title>
+    <title>Smart Schedule - SMKN 1 Maluku Tengah</title>
     <style>
         :root {
             --glass: rgba(255, 255, 255, 0.2);
@@ -31,7 +31,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        .container { max-width: 1000px; margin: 0 auto; }
+        .container { max-width: 1100px; margin: 0 auto; }
 
         .header { text-align: center; margin-bottom: 30px; }
         .header h1 { font-size: 2.2rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.2); }
@@ -39,7 +39,7 @@
         .back-button {
             display: inline-block;
             margin-bottom: 25px;
-            padding: 10px 20px;
+            padding: 12px 24px;
             background: var(--glass);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.3);
@@ -47,10 +47,10 @@
             color: white;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.9rem;
+            transition: 0.3s;
         }
+        .back-button:hover { background: var(--glass-heavy); transform: translateX(-5px); }
 
-        /* SEARCH BOX */
         .search-box {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -89,6 +89,7 @@
             background: rgba(0,0,0,0.25);
             border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.1);
+            min-height: 80px;
         }
 
         .live-tag {
@@ -115,10 +116,9 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
         }
 
-        /* GRID CLASS */
         .class-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
@@ -135,32 +135,16 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .class-card::after {
-            content: "Klik untuk Jadwal Lengkap →";
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            background: var(--accent);
-            color: #333;
-            font-size: 0.65rem;
-            padding: 2px 10px;
-            border-radius: 10px 0 0 0;
-            font-weight: bold;
-            opacity: 0.8;
         }
 
         .class-card:hover { 
             background: var(--glass-heavy); 
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
         .class-name { font-size: 1.5rem; font-weight: bold; display: block; }
         .class-desc { font-size: 0.9rem; opacity: 0.8; }
+        .click-hint { font-size: 0.7rem; color: var(--accent); margin-top: 10px; font-weight: bold; }
 
     </style>
 </head>
@@ -170,182 +154,263 @@
     <a href="https://alexbahy-tech.github.io/smartkurikulumsmkn1mt/" class="back-button">← Kembali ke Center</a>
 
     <div class="header">
-        <h1>📚 Smart Jadwal SMKN 1 MALUKU TENGAH</h1>
+        <h1>📚 Portal Jadwal SMKN 1 MT</h1>
         <p id="realtime-clock">Memuat waktu...</p>
     </div>
 
     <div class="search-box">
-        <input type="text" id="mainSearch" class="search-input" placeholder="Cari Guru / Mata Pelajaran..." onkeyup="performSearch()">
+        <input type="text" id="mainSearch" class="search-input" placeholder="Cari Guru, Mapel, atau Kelas..." onkeyup="performSearch()">
         <div id="searchContainer">
-            <h4 style="margin: 20px 0 10px 0; color: var(--accent);">🔍 Hasil Pencarian Jadwal:</h4>
+            <h4 style="margin: 20px 0 10px 0; color: var(--accent);">🔍 Hasil Pencarian:</h4>
             <div id="searchResults"></div>
         </div>
     </div>
 
     <div class="class-grid">
         <a href="https://alexbahy-tech.github.io/jadwal-xmplb/" class="class-card">
-            <div>
-                <span class="class-name">X MPLB</span>
-                <span class="class-desc">Manajemen Perkantoran</span>
-            </div>
-            <div class="now-teaching" id="live-XMPLB">Mengecek jadwal...</div>
+            <div><span class="class-name">X MPLB</span><span class="class-desc">Manajemen Perkantoran</span></div>
+            <div class="now-teaching" id="live-XMPLB">Mengecek...</div>
+            <div class="click-hint">Lihat Jadwal Lengkap →</div>
         </a>
 
         <a href="https://alexbahy-tech.github.io/jadwal-xakl/" class="class-card">
-            <div>
-                <span class="class-name">X AKL</span>
-                <span class="class-desc">Akuntansi</span>
-            </div>
-            <div class="now-teaching" id="live-XAKL">Mengecek jadwal...</div>
+            <div><span class="class-name">X AKL</span><span class="class-desc">Akuntansi</span></div>
+            <div class="now-teaching" id="live-XAKL">Mengecek...</div>
+            <div class="click-hint">Lihat Jadwal Lengkap →</div>
         </a>
 
         <a href="https://alexbahy-tech.github.io/jadwal-xpms/" class="class-card">
-            <div>
-                <span class="class-name">X PMS</span>
-                <span class="class-desc">Pemasaran</span>
-            </div>
-            <div class="now-teaching" id="live-XPMS">Mengecek jadwal...</div>
+            <div><span class="class-name">X PMS</span><span class="class-desc">Pemasaran</span></div>
+            <div class="now-teaching" id="live-XPMS">Mengecek...</div>
+            <div class="click-hint">Lihat Jadwal Lengkap →</div>
+        </a>
+
+        <a href="https://alexbahy-tech.github.io/jadwal-x-ulp/" class="class-card">
+            <div><span class="class-name">X ULP</span><span class="class-desc">Usaha Layanan Pariwisata</span></div>
+            <div class="now-teaching" id="live-XULP">Mengecek...</div>
+            <div class="click-hint">Lihat Jadwal Lengkap →</div>
+        </a>
+
+        <a href="https://alexbahy-tech.github.io/jadwal-xtjkt/" class="class-card">
+            <div><span class="class-name">X TJKT 1</span><span class="class-desc">Teknik Komputer & Jaringan</span></div>
+            <div class="now-teaching" id="live-XTJKT1">Mengecek...</div>
+            <div class="click-hint">Lihat Jadwal Lengkap →</div>
+        </a>
+
+        <a href="https://alexbahy-tech.github.io/jadwal-xtjkt2/" class="class-card">
+            <div><span class="class-name">X TJKT 2</span><span class="class-desc">Teknik Komputer & Jaringan</span></div>
+            <div class="now-teaching" id="live-XTJKT2">Mengecek...</div>
+            <div class="click-hint">Lihat Jadwal Lengkap →</div>
         </a>
     </div>
 </div>
 
 <script>
     const database = [
-        // --- DATA LENGKAP X MPLB ---
-        { hri: "Senin", kls: "X MPLB", jam: "07:30 - 09:30", mapel: "Dasar Program Keahlian MPLB", guru: "B.W. Tanamal, S.Pd" },
-        { hri: "Senin", kls: "X MPLB", jam: "09:30 - 10:10", mapel: "Bahasa Inggris", guru: "Yulan Talarima, S.Pd.,Gr" },
-        { hri: "Senin", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Senin", kls: "X MPLB", jam: "10:30 - 11:50", mapel: "Bahasa Inggris", guru: "Yulan Talarima, S.Pd.,Gr" },
-        { hri: "Senin", kls: "X MPLB", jam: "11:50 - 13:10", mapel: "Matematika", guru: "T.M.A. Kappuw, S.Pd" },
-        { hri: "Senin", kls: "X MPLB", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
-        { hri: "Senin", kls: "X MPLB", jam: "13:30 - 14:10", mapel: "Matematika", guru: "T.M.A. Kappuw, S.Pd" },
-        { hri: "Senin", kls: "X MPLB", jam: "14:10 - 15:30", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
-        { hri: "Selasa", kls: "X MPLB", jam: "07:30 - 08:50", mapel: "Sejarah", guru: "V. Ruhukail, S.Pd" },
-        { hri: "Selasa", kls: "X MPLB", jam: "08:50 - 10:10", mapel: "Pend. Jasmani & Olahraga", guru: "O.A. Lawalata, S.Pd" },
-        { hri: "Selasa", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Selasa", kls: "X MPLB", jam: "10:30 - 11:10", mapel: "Pend. Jasmani & Olahraga", guru: "O.A. Lawalata, S.Pd" },
-        { hri: "Selasa", kls: "X MPLB", jam: "11:10 - 13:10", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
-        { hri: "Selasa", kls: "X MPLB", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
-        { hri: "Selasa", kls: "X MPLB", jam: "13:30 - 15:30", mapel: "Dasar Program Keahlian", guru: "B.W. Tanamal,S.Pd" },
-        { hri: "Rabu", kls: "X MPLB", jam: "07:30 - 08:50", mapel: "Pendidikan Pancasila", guru: "E.A. Wacanno, S.Pd" },
-        { hri: "Rabu", kls: "X MPLB", jam: "08:50 - 10:10", mapel: "Kokurikuler PJBL", guru: "T.M.A. Kappuw, S.Pd" },
-        { hri: "Rabu", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Rabu", kls: "X MPLB", jam: "10:30 - 11:10", mapel: "Kokurikuler PJBL", guru: "T.M.A. Kappuw, S.Pd" },
-        { hri: "Rabu", kls: "X MPLB", jam: "11:10 - 13:10", mapel: "Dasar Program Keahlian MPLB", guru: "B.W. Tanamal, S.Pd" },
-        { hri: "Rabu", kls: "X MPLB", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
-        { hri: "Rabu", kls: "X MPLB", jam: "13:30 - 15:30", mapel: "Bahasa Indonesia", guru: "Suharja Duhalim, S.Pd" },
-        { hri: "Kamis", kls: "X MPLB", jam: "07:30 - 09:30", mapel: "Dasar Program Keahlian MPLB", guru: "B.W. Tanamal, S.Pd" },
-        { hri: "Kamis", kls: "X MPLB", jam: "09:30 - 10:10", mapel: "Kokurikuler PJBL", guru: "T.M.A. Kappuw, S.Pd" },
-        { hri: "Kamis", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Kamis", kls: "X MPLB", jam: "10:30 - 11:10", mapel: "Kokurikuler PJBL", guru: "T.M.A. Kappuw, S.Pd" },
-        { hri: "Kamis", kls: "X MPLB", jam: "11:10 - 13:10", mapel: "Pend. Agama (PAI/PAK)", guru: "Budiarto Tahidi / Allen Matinahoruw" },
-        { hri: "Kamis", kls: "X MPLB", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
-        { hri: "Kamis", kls: "X MPLB", jam: "13:30 - 15:30", mapel: "Seni Budaya (Musik)", guru: "R. A. Ririhena, SM.Gr" },
-        { hri: "Jumat", kls: "X MPLB", jam: "07:30 - 08:50", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
-        { hri: "Jumat", kls: "X MPLB", jam: "08:50 - 10:10", mapel: "Informatika", guru: "Latumeirissa Allcresdo, S.Pd" },
-        { hri: "Jumat", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
-        { hri: "Jumat", kls: "X MPLB", jam: "10:30 - 12:30", mapel: "Informatika", guru: "Latumeirissa Allcresdo" },
+        // --- X MPLB ---
+        { hri: "Sen", kls: "X MPLB", jam: "07:30 - 09:30", mapel: "Dasar Program Keahlian MPLB", guru: "B.W. Tanamal, S.Pd" },
+        { hri: "Sen", kls: "X MPLB", jam: "09:30 - 10:10", mapel: "Bahasa Inggris", guru: "Yulan Talarima, S.Pd.,Gr" },
+        { hri: "Sen", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Sen", kls: "X MPLB", jam: "10:30 - 11:50", mapel: "Bahasa Inggris", guru: "Yulan Talarima, S.Pd.,Gr" },
+        { hri: "Sen", kls: "X MPLB", jam: "11:50 - 13:10", mapel: "Matematika", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Sen", kls: "X MPLB", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Sen", kls: "X MPLB", jam: "13:30 - 14:10", mapel: "Matematika", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Sen", kls: "X MPLB", jam: "14:10 - 15:30", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Sel", kls: "X MPLB", jam: "07:30 - 08:50", mapel: "Sejarah", guru: "V. Ruhukail, S.Pd" },
+        { hri: "Sel", kls: "X MPLB", jam: "08:50 - 10:10", mapel: "Pend. Jasmani & Olahraga", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Sel", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Sel", kls: "X MPLB", jam: "10:30 - 11:10", mapel: "Pend. Jasmani & Olahraga", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Sel", kls: "X MPLB", jam: "11:10 - 13:10", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Sel", kls: "X MPLB", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Sel", kls: "X MPLB", jam: "13:30 - 15:30", mapel: "Dasar Program Keahlian", guru: "B.W. Tanamal,S.Pd" },
+        { hri: "Rab", kls: "X MPLB", jam: "07:30 - 08:50", mapel: "Pendidikan Pancasila", guru: "E.A. Wacanno, S.Pd" },
+        { hri: "Rab", kls: "X MPLB", jam: "08:50 - 10:10", mapel: "Kokurikuler PJBL", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Rab", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Rab", kls: "X MPLB", jam: "10:30 - 11:10", mapel: "Kokurikuler PJBL", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Rab", kls: "X MPLB", jam: "11:10 - 13:10", mapel: "Dasar Program Keahlian MPLB", guru: "B.W. Tanamal, S.Pd" },
+        { hri: "Rab", kls: "X MPLB", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Rab", kls: "X MPLB", jam: "13:30 - 15:30", mapel: "Bahasa Indonesia", guru: "Suharja Duhalim, S.Pd" },
+        { hri: "Kam", kls: "X MPLB", jam: "07:30 - 09:30", mapel: "Dasar Program Keahlian MPLB", guru: "B.W. Tanamal, S.Pd" },
+        { hri: "Kam", kls: "X MPLB", jam: "09:30 - 10:10", mapel: "Kokurikuler PJBL", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Kam", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Kam", kls: "X MPLB", jam: "10:30 - 11:10", mapel: "Kokurikuler PJBL", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Kam", kls: "X MPLB", jam: "11:10 - 13:10", mapel: "Pend. Agama (PAI/PAK)", guru: "Budiarto Tahidi / Allen Matinahoruw" },
+        { hri: "Kam", kls: "X MPLB", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Kam", kls: "X MPLB", jam: "13:30 - 15:30", mapel: "Seni Budaya (Musik)", guru: "R. A. Ririhena, SM.Gr" },
+        { hri: "Jum", kls: "X MPLB", jam: "07:30 - 08:50", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
+        { hri: "Jum", kls: "X MPLB", jam: "08:50 - 10:10", mapel: "Informatika", guru: "Latumeirissa Allcresdo, S.Pd" },
+        { hri: "Jum", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Jum", kls: "X MPLB", jam: "10:30 - 12:30", mapel: "Informatika", guru: "Latumeirissa Allcresdo" },
 
-        // --- DATA LENGKAP X AKL ---
-        { hri: "Senin", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Informatika", guru: "Axl Denis Hallatu, S.Kom" },
-        { hri: "Senin", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
-        { hri: "Senin", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Senin", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
-        { hri: "Senin", kls: "X AKL", jam: "11:10 - 12:30", mapel: "Bahasa Indonesia", guru: "Wa Mulina, S.Pd" },
-        { hri: "Senin", kls: "X AKL", jam: "13:30 - 15:30", mapel: "Kokurikuler PJBL", guru: "A. Bahy, S.Pd., M.Pd" },
-        { hri: "Selasa", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Pendidikan Pancasila", guru: "E.A. Wacanno, S.Pd" },
-        { hri: "Selasa", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
-        { hri: "Selasa", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Selasa", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
-        { hri: "Selasa", kls: "X AKL", jam: "11:10 - 12:30", mapel: "Dasar Program Keahlian AKL", guru: "Diwanti Wally, A.Md" },
-        { hri: "Selasa", kls: "X AKL", jam: "13:30 - 15:30", mapel: "Matematika", guru: "T.M.A. Kappuw, S.Pd" },
-        { hri: "Rabu", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
-        { hri: "Rabu", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Seni Budaya (Seni Musik)", guru: "R. A. Ririnena, SM.Gr" },
-        { hri: "Rabu", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Rabu", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Seni Budaya (Seni Musik)", guru: "R. A. Ririnena, SM.Gr" },
-        { hri: "Rabu", kls: "X AKL", jam: "11:10 - 12:30", mapel: "Dasar Program Keahlian AKL", guru: "M. Kunu, S.Pd" },
-        { hri: "Rabu", kls: "X AKL", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
-        { hri: "Rabu", kls: "X AKL", jam: "13:30 - 15:30", mapel: "Bahasa Inggris", guru: "A. Bahy, S.Pd., M.Pd" },
-        { hri: "Kamis", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Kokurikuler PJBL", guru: "A. Bahy, S.Pd., M.Pd" },
-        { hri: "Kamis", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Dasar Program Keahlian AKL", guru: "Diwanti Wally, A.Md" },
-        { hri: "Kamis", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Kamis", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Dasar Program Keahlian AKL", guru: "Diwanti Wally, A.Md" },
-        { hri: "Kamis", kls: "X AKL", jam: "11:10 - 12:30", mapel: "Pendidikan Agama", guru: "Budiarto Tahidi / Allen Matinahoruw" },
-        { hri: "Kamis", kls: "X AKL", jam: "13:30 - 15:30", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
-        { hri: "Jumat", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Sejarah", guru: "V. Ruhukail, S.Pd" },
-        { hri: "Jumat", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Dasar Program Keahlian AKL", guru: "M. Kunu, S.Pd" },
-        { hri: "Jumat", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Jumat", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Dasar Program Keahlian AKL", guru: "M. Kunu, S.Pd" },
+        // --- X AKL ---
+        { hri: "Sen", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Informatika", guru: "Axl Denis Hallatu, S.Kom" },
+        { hri: "Sen", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Sen", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Sen", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Sen", kls: "X AKL", jam: "11:10 - 13:10", mapel: "Bahasa Indonesia", guru: "Wa Mulina, S.Pd" },
+        { hri: "Sen", kls: "X AKL", jam: "13:30 - 15:30", mapel: "Kokurikuler PJBL", guru: "A. Bahy, S.Pd., M.Pd" },
+        { hri: "Sel", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Pendidikan Pancasila", guru: "E.A. Wacanno, S.Pd" },
+        { hri: "Sel", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Sel", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Sel", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Sel", kls: "X AKL", jam: "11:10 - 13:10", mapel: "Dasar Program Keahlian AKL", guru: "Diwanti Wally, A.Md" },
+        { hri: "Sel", kls: "X AKL", jam: "13:30 - 15:30", mapel: "Matematika", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Rab", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Rab", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Seni Budaya (Seni Musik)", guru: "R. A. Ririnena, SM.Gr" },
+        { hri: "Rab", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Rab", kls: "X AKL", jam: "11:10 - 13:10", mapel: "Dasar Program Keahlian AKL", guru: "M. Kunu, S.Pd" },
+        { hri: "Rab", kls: "X AKL", jam: "13:30 - 15:30", mapel: "Bahasa Inggris", guru: "A. Bahy, S.Pd., M.Pd" },
+        { hri: "Kam", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Kokurikuler PJBL", guru: "A. Bahy, S.Pd., M.Pd" },
+        { hri: "Kam", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Dasar Program Keahlian AKL", guru: "Diwanti Wally, A.Md" },
+        { hri: "Kam", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Kam", kls: "X AKL", jam: "11:10 - 13:10", mapel: "Pendidikan Agama", guru: "Budiarto Tahidi / M. Matinaheruw" },
+        { hri: "Kam", kls: "X AKL", jam: "13:30 - 15:30", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
+        { hri: "Jum", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Sejarah", guru: "V. Ruhukail, S.Pd" },
+        { hri: "Jum", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Dasar Program Keahlian AKL", guru: "M. Kunu, S.Pd" },
+        { hri: "Jum", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Jum", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Dasar Program Keahlian AKL", guru: "M. Kunu, S.Pd" },
 
-        // --- DATA LENGKAP X PMS ---
-        { hri: "Senin", kls: "X PMS", jam: "07:30 - 10:10", mapel: "DPK PMS (Wawasan Dunia Kerja)", guru: "H. Salampessy, SE" },
-        { hri: "Senin", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Senin", kls: "X PMS", jam: "10:30 - 12:30", mapel: "Bahasa Inggris", guru: "Ch. Elias, S.Pd., M.Pd" },
-        { hri: "Senin", kls: "X PMS", jam: "12:30 - 13:10", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
-        { hri: "Senin", kls: "X PMS", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
-        { hri: "Senin", kls: "X PMS", jam: "13:30 - 15:30", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
-        { hri: "Selasa", kls: "X PMS", jam: "07:30 - 08:50", mapel: "Seni Musik", guru: "R.A. Ririhena" },
-        { hri: "Selasa", kls: "X PMS", jam: "08:50 - 10:10", mapel: "Kokurikuler PJBL", guru: "B.W. Tanamal, S.Pd" },
-        { hri: "Selasa", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Selasa", kls: "X PMS", jam: "10:30 - 11:10", mapel: "Kokurikuler PJBL", guru: "B.W. Tanamal, S.Pd" },
-        { hri: "Selasa", kls: "X PMS", jam: "11:10 - 13:10", mapel: "Bahasa Indonesia", guru: "Suharja Duhalim, S.Pd" },
-        { hri: "Selasa", kls: "X PMS", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
-        { hri: "Selasa", kls: "X PMS", jam: "13:30 - 15:30", mapel: "Informatika", guru: "S. Pattiradjawane" },
-        { hri: "Rabu", kls: "X PMS", jam: "07:30 - 08:50", mapel: "Kokurikuler PJBL", guru: "B.W. Tanamal, S.Pd" },
-        { hri: "Rabu", kls: "X PMS", jam: "08:50 - 10:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
-        { hri: "Rabu", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Rabu", kls: "X PMS", jam: "10:30 - 11:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
-        { hri: "Rabu", kls: "X PMS", jam: "11:10 - 12:30", mapel: "Pendidikan Pancasila", guru: "E.A. Wacanno, S.Pd" },
-        { hri: "Rabu", kls: "X PMS", jam: "12:30 - 13:10", mapel: "DPK PMS (Kecakapan Kerja)", guru: "Kalsum Mony, S.Pd" },
-        { hri: "Rabu", kls: "X PMS", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
-        { hri: "Rabu", kls: "X PMS", jam: "13:30 - 15:30", mapel: "DPK PMS (Lanjutan)", guru: "Kalsum Mony, S.Pd" },
-        { hri: "Kamis", kls: "X PMS", jam: "07:30 - 10:10", mapel: "DPK PMS (K3 & Budaya Kerja)", guru: "D. Simaela, S.Pd" },
-        { hri: "Kamis", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Kamis", kls: "X PMS", jam: "10:30 - 12:30", mapel: "Matematika", guru: "R. E. Ruhukail, S.Pd., M.Pd" },
-        { hri: "Kamis", kls: "X PMS", jam: "12:30 - 13:10", mapel: "Projek IPAS", guru: "Boki Tuasikal, S.Pd" },
-        { hri: "Kamis", kls: "X PMS", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
-        { hri: "Kamis", kls: "X PMS", jam: "13:30 - 14:50", mapel: "Projek IPAS (Lanjutan)", guru: "Boki Tuasikal, S.Pd" },
-        { hri: "Jumat", kls: "X PMS", jam: "07:30 - 10:10", mapel: "Pendidikan Agama", guru: "Djurniaty / F.L. Pelletimu" },
-        { hri: "Jumat", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
-        { hri: "Jumat", kls: "X PMS", jam: "10:30 - 11:50", mapel: "Projek IPAS", guru: "Boki Tuasikal, S.Pd" }
+        // --- X PMS ---
+        { hri: "Sen", kls: "X PMS", jam: "07:30 - 10:10", mapel: "DPK PMS (Wawasan Dunia Kerja)", guru: "H. Salampessy, SE" },
+        { hri: "Sen", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Sen", kls: "X PMS", jam: "10:30 - 12:30", mapel: "Bahasa Inggris", guru: "Ch. Elias, S.Pd., M.Pd" },
+        { hri: "Sen", kls: "X PMS", jam: "13:30 - 15:30", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
+        { hri: "Sel", kls: "X PMS", jam: "07:30 - 08:50", mapel: "Seni Musik", guru: "R.A. Ririhena" },
+        { hri: "Sel", kls: "X PMS", jam: "08:50 - 10:10", mapel: "Kokurikuler PJBL", guru: "B.W. Tanamal, S.Pd" },
+        { hri: "Sel", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Sel", kls: "X PMS", jam: "11:10 - 13:10", mapel: "Bahasa Indonesia", guru: "Suharja Duhalim, S.Pd" },
+        { hri: "Sel", kls: "X PMS", jam: "13:30 - 15:30", mapel: "Informatika", guru: "S. Pattiradjawane" },
+        { hri: "Rab", kls: "X PMS", jam: "07:30 - 08:50", mapel: "Kokurikuler PJBL", guru: "B.W. Tanamal, S.Pd" },
+        { hri: "Rab", kls: "X PMS", jam: "08:50 - 10:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Rab", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Rab", kls: "X PMS", jam: "11:10 - 12:30", mapel: "Pendidikan Pancasila", guru: "E.A. Wacanno, S.Pd" },
+        { hri: "Rab", kls: "X PMS", jam: "12:30 - 13:10", mapel: "DPK PMS (Kecakapan Kerja)", guru: "Kalsum Mony, S.Pd" },
+        { hri: "Rab", kls: "X PMS", jam: "13:30 - 15:30", mapel: "DPK PMS (Lanjutan)", guru: "Kalsum Mony, S.Pd" },
+        { hri: "Kam", kls: "X PMS", jam: "07:30 - 10:10", mapel: "DPK PMS (K3 & Budaya Kerja)", guru: "D. Simaela, S.Pd" },
+        { hri: "Kam", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Kam", kls: "X PMS", jam: "10:30 - 12:30", mapel: "Matematika", guru: "R. E. Ruhukail, S.Pd., M.Pd" },
+        { hri: "Kam", kls: "X PMS", jam: "12:30 - 13:10", mapel: "Projek IPAS", guru: "Boki Tuasikal, S.Pd" },
+        { hri: "Kam", kls: "X PMS", jam: "13:30 - 14:50", mapel: "Projek IPAS (Lanjutan)", guru: "Boki Tuasikal, S.Pd" },
+        { hri: "Jum", kls: "X PMS", jam: "07:30 - 10:10", mapel: "Pendidikan Agama", guru: "Djurniaty / F.L. Pelletimu" },
+        { hri: "Jum", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Jum", kls: "X PMS", jam: "10:30 - 11:50", mapel: "Projek IPAS", guru: "Boki Tuasikal, S.Pd" },
+
+        // --- X ULP ---
+        { hri: "Sen", kls: "X ULP", jam: "07:30 - 08:10", mapel: "Sejarah", guru: "R. A. Ririhena, SM.Gr" },
+        { hri: "Sen", kls: "X ULP", jam: "08:10 - 10:10", mapel: "Dasar Program Keahlian ULP", guru: "M. Siwabessy, S.Tr.Par" },
+        { hri: "Sen", kls: "X ULP", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Sen", kls: "X ULP", jam: "10:30 - 11:50", mapel: "Dasar Program Keahlian ULP", guru: "M. Siwabessy, S.Tr.Par" },
+        { hri: "Sen", kls: "X ULP", jam: "11:50 - 13:10", mapel: "PJBL Kokurikuler", guru: "A.W.J. Soplantila, S.Tr.Par" },
+        { hri: "Sen", kls: "X ULP", jam: "13:30 - 15:30", mapel: "Informatika", guru: "A.W.J. Soplantila, S.Tr.Par" },
+        { hri: "Sel", kls: "X ULP", jam: "07:30 - 09:30", mapel: "Dasar Program Keahlian ULP", guru: "V. Ruhukail, S.Pd" },
+        { hri: "Sel", kls: "X ULP", jam: "09:30 - 10:10", mapel: "Matematika", guru: "R. E. Ruhukail, S.Pd., M.Pd" },
+        { hri: "Sel", kls: "X ULP", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Sel", kls: "X ULP", jam: "11:10 - 13:10", mapel: "Pendidikan Pancasila", guru: "E.A. Wacanno, S.Pd" },
+        { hri: "Sel", kls: "X ULP", jam: "13:30 - 15:30", mapel: "Bahasa Indonesia", guru: "Wa Mulina, S.Pd" },
+        { hri: "Rab", kls: "X ULP", jam: "07:30 - 08:50", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Rab", kls: "X ULP", jam: "08:50 - 10:10", mapel: "Seni Budaya (Musik)", guru: "M. Siwabessy, S.Tr.Par" },
+        { hri: "Rab", kls: "X ULP", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Rab", kls: "X ULP", jam: "10:30 - 11:50", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Rab", kls: "X ULP", jam: "11:50 - 13:10", mapel: "Dasar Program Keahlian ULP", guru: "M. Siwabessy, S.Tr.Par" },
+        { hri: "Rab", kls: "X ULP", jam: "13:30 - 15:30", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Kam", kls: "X ULP", jam: "08:10 - 10:10", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
+        { hri: "Kam", kls: "X ULP", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Kam", kls: "X ULP", jam: "11:10 - 11:50", mapel: "Bahasa Inggris", guru: "Yulan Talarima, S.Pd.Gr" },
+        { hri: "Kam", kls: "X ULP", jam: "11:50 - 13:10", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Kam", kls: "X ULP", jam: "13:30 - 15:30", mapel: "Bahasa Inggris", guru: "Yulan Talarima, S.Pd.Gr" },
+        { hri: "Jum", kls: "X ULP", jam: "07:30 - 10:10", mapel: "Pendidikan Agama", guru: "Djurniaty / F.L. Pelletim" },
+        { hri: "Jum", kls: "X ULP", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Jum", kls: "X ULP", jam: "10:30 - 11:50", mapel: "Kokurikuler PJBL", guru: "A.W.J. Soplantila, S.Tr.Par" },
+
+        // --- X TJKT 1 ---
+        { hri: "Sen", kls: "X TJKT 1", jam: "07:30 - 08:50", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
+        { hri: "Sen", kls: "X TJKT 1", jam: "08:50 - 10:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Sen", kls: "X TJKT 1", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Sen", kls: "X TJKT 1", jam: "10:30 - 11:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Sen", kls: "X TJKT 1", jam: "11:10 - 12:30", mapel: "Sejarah", guru: "V. Ruhukail, S.Pd" },
+        { hri: "Sen", kls: "X TJKT 1", jam: "12:30 - 13:10", mapel: "DPK TJKT2 (Teknologi TJKT)", guru: "R.Y. Ririhena, S.Pd.Kom" },
+        { hri: "Sen", kls: "X TJKT 1", jam: "13:30 - 14:10", mapel: "DPK TJKT2 (Teknologi TJKT)", guru: "R.Y. Ririhena, S.Pd.Kom" },
+        { hri: "Sen", kls: "X TJKT 1", jam: "14:10 - 15:30", mapel: "Pendidikan Pancasila", guru: "E.A. Wacanno, S.Pd" },
+        { hri: "Sel", kls: "X TJKT 1", jam: "07:30 - 09:30", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Sel", kls: "X TJKT 1", jam: "09:30 - 10:10", mapel: "Bahasa Inggris", guru: "A. Bahy, S.Pd., M.Pd" },
+        { hri: "Sel", kls: "X TJKT 1", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Sel", kls: "X TJKT 1", jam: "10:30 - 11:50", mapel: "Bahasa Inggris", guru: "A. Bahy, S.Pd., M.Pd" },
+        { hri: "Sel", kls: "X TJKT 1", jam: "11:50 - 13:10", mapel: "Informatika", guru: "Mani Jamaludin, S.Kom" },
+        { hri: "Sel", kls: "X TJKT 1", jam: "13:30 - 14:10", mapel: "Informatika", guru: "Mani Jamaludin, S.Kom" },
+        { hri: "Sel", kls: "X TJKT 1", jam: "14:10 - 15:30", mapel: "DPK TJKT2 (Teknologi TJKT)", guru: "R.Y. Ririhena, S.Pd.Kom" },
+        { hri: "Rab", kls: "X TJKT 1", jam: "07:30 - 10:10", mapel: "DPK TJKT1 (Jaringan & Telko)", guru: "Axel Denis Hallatu, S.Kom" },
+        { hri: "Rab", kls: "X TJKT 1", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Rab", kls: "X TJKT 1", jam: "10:30 - 13:10", mapel: "DPK TJKT3 (Proses Bisnis)", guru: "Gloria S. Pattiradjawane, S.Tr.TI" },
+        { hri: "Rab", kls: "X TJKT 1", jam: "13:30 - 15:30", mapel: "Pendidikan Agama", guru: "B. Tahidi / F. Pelletimu" },
+        { hri: "Kam", kls: "X TJKT 1", jam: "07:30 - 08:50", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Kam", kls: "X TJKT 1", jam: "08:50 - 10:10", mapel: "Matematika", guru: "Latumerissa Alicresdo" },
+        { hri: "Kam", kls: "X TJKT 1", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Kam", kls: "X TJKT 1", jam: "10:30 - 11:10", mapel: "Matematika", guru: "Latumerissa Alicresdo" },
+        { hri: "Kam", kls: "X TJKT 1", jam: "11:10 - 13:10", mapel: "Kokurikuler PJBL", guru: "Wa Mulina, S.Pd" },
+        { hri: "Kam", kls: "X TJKT 1", jam: "13:30 - 14:50", mapel: "Kokurikuler PJBL", guru: "Wa Mulina, S.Pd" },
+        { hri: "Jum", kls: "X TJKT 1", jam: "07:30 - 09:30", mapel: "Bahasa Indonesia", guru: "Wa Mulina, S.Pd" },
+        { hri: "Jum", kls: "X TJKT 1", jam: "09:30 - 10:10", mapel: "Seni Budaya (Musik)", guru: "R.A. Ririhena, SM.Gr" },
+        { hri: "Jum", kls: "X TJKT 1", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Jum", kls: "X TJKT 1", jam: "10:30 - 11:50", mapel: "Seni Budaya (Musik)", guru: "R.A. Ririhena, SM.Gr" },
+
+        // --- X TJKT 2 ---
+        { hri: "Sen", kls: "X TJKT 2", jam: "07:30 - 08:10", mapel: "Kokurikuler PJBL", guru: "Dahasian, S.Pd.Gr" },
+        { hri: "Sen", kls: "X TJKT 2", jam: "08:10 - 09:30", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Sen", kls: "X TJKT 2", jam: "09:30 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Sen", kls: "X TJKT 2", jam: "10:30 - 11:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Sen", kls: "X TJKT 2", jam: "11:10 - 12:30", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
+        { hri: "Sen", kls: "X TJKT 2", jam: "12:30 - 14:10", mapel: "Pendidikan Pancasila", guru: "E.A. Wacanno, S.Pd" },
+        { hri: "Sen", kls: "X TJKT 2", jam: "14:10 - 14:50", mapel: "Seni Budaya (Musik)", guru: "R. A. Ririhena, SM.Gr" },
+        { hri: "Sel", kls: "X TJKT 2", jam: "07:30 - 08:50", mapel: "DPK TJKT2 (Teknologi TJKT)", guru: "S. Singadji, S.Kom" },
+        { hri: "Sel", kls: "X TJKT 2", jam: "08:50 - 10:10", mapel: "DPK TJKT3 (Proses Bisnis TJKT)", guru: "R.Y. Ririhena, S.PdKom" },
+        { hri: "Sel", kls: "X TJKT 2", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Sel", kls: "X TJKT 2", jam: "10:30 - 11:10", mapel: "DPK TJKT3 (Proses Bisnis TJKT)", guru: "R.Y. Ririhena, S.PdKom" },
+        { hri: "Sel", kls: "X TJKT 2", jam: "11:10 - 12:30", mapel: "Matematika", guru: "Netri Wailaruno, S.Pd" },
+        { hri: "Sel", kls: "X TJKT 2", jam: "12:30 - 14:10", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Rab", kls: "X TJKT 2", jam: "07:30 - 09:30", mapel: "Informatika", guru: "Mani Jamaludin, S.Kom" },
+        { hri: "Rab", kls: "X TJKT 2", jam: "09:30 - 10:10", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Rab", kls: "X TJKT 2", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Rab", kls: "X TJKT 2", jam: "10:30 - 11:50", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Rab", kls: "X TJKT 2", jam: "11:50 - 13:10", mapel: "Sejarah", guru: "V. Ruhukail, S.Pd" },
+        { hri: "Rab", kls: "X TJKT 2", jam: "13:10 - 14:50", mapel: "Pendidikan Agama", guru: "B. Tahidi / F.L. Pelletimu" },
+        { hri: "Kam", kls: "X TJKT 2", jam: "07:30 - 09:30", mapel: "Bahasa Indonesia", guru: "Wa Mulina, S.Pd" },
+        { hri: "Kam", kls: "X TJKT 2", jam: "09:30 - 10:10", mapel: "DPK TJKT1 (Media & Jaringan)", guru: "R.Y. Ririhena, S.PdKom" },
+        { hri: "Kam", kls: "X TJKT 2", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Kam", kls: "X TJKT 2", jam: "10:30 - 12:30", mapel: "DPK TJKT1 (Media & Jaringan)", guru: "R.Y. Ririhena, S.PdKom" },
+        { hri: "Kam", kls: "X TJKT 2", jam: "12:30 - 14:10", mapel: "Bahasa Inggris", guru: "A. Bahy, S.Pd., M.Pd" },
+        { hri: "Jum", kls: "X TJKT 2", jam: "07:30 - 08:50", mapel: "DPK TJKT2 (Teknologi TJKT)", guru: "S. Singadji, S.Kom" },
+        { hri: "Jum", kls: "X TJKT 2", jam: "08:50 - 10:10", mapel: "Kokurikuler PJBL", guru: "Dahasian, S.Pd.Gr" }
     ];
 
     function updateLiveStatus() {
         const now = new Date();
-        const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const days = ["Minggu", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
         const currentDay = days[now.getDay()];
-        
-        const h = now.getHours().toString().padStart(2, '0');
-        const m = now.getMinutes().toString().padStart(2, '0');
-        const timeString = `${h}:${m}`;
+        const timeString = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
         
         document.getElementById('realtime-clock').innerText = `${currentDay}, ${timeString} WIT`;
 
-        const classes = ["X MPLB", "X AKL", "X PMS"];
+        const classes = ["X MPLB", "X AKL", "X PMS", "X ULP", "X TJKT 1", "X TJKT 2"];
 
         classes.forEach(klsName => {
             const displayId = "live-" + klsName.replace(/\s/g, '');
             const displayElement = document.getElementById(displayId);
+            if(!displayElement) return;
             
             const activeLesson = database.find(item => {
                 if (item.hri !== currentDay || item.kls !== klsName) return false;
-                const [start, end] = item.jam.split(" - ");
+                const [start, end] = item.jam.split("-").map(t => t.trim());
                 return timeString >= start && timeString <= end;
             });
 
             if (activeLesson) {
                 if (activeLesson.type === "break") {
-                    displayElement.innerHTML = `
-                        <div class="live-tag" style="color:#f87171">☕ ISTIRAHAT</div>
-                        <strong style="color:#f87171">${activeLesson.mapel}</strong>`;
+                    displayElement.innerHTML = `<div class="live-tag" style="color:var(--break)">☕ ISTIRAHAT</div><strong>${activeLesson.mapel}</strong>`;
                 } else {
-                    displayElement.innerHTML = `
-                        <div class="live-tag"><span class="pulse"></span> SEDANG BERLANGSUNG</div>
-                        <strong>${activeLesson.mapel}</strong><br>
-                        <small>👤 ${activeLesson.guru}</small>`;
+                    displayElement.innerHTML = `<div class="live-tag"><span class="pulse"></span> LIVE</div><strong>${activeLesson.mapel}</strong><br><small>👤 ${activeLesson.guru}</small>`;
                 }
             } else {
-                displayElement.innerHTML = `<span style="opacity:0.6;">Tidak ada KBM saat ini</span>`;
+                displayElement.innerHTML = `<span style="opacity:0.6;">Tidak ada KBM aktif</span>`;
             }
         });
     }
@@ -369,28 +434,21 @@
         container.style.display = 'block';
         resultDiv.innerHTML = '';
 
-        if (filtered.length > 0) {
-            filtered.forEach(data => {
-                resultDiv.innerHTML += `
-                    <div class="result-card">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-weight:bold; color:#764ba2;">${data.guru}</span>
-                            <span style="background:#764ba2; color:white; padding:2px 10px; border-radius:15px; font-size:0.7rem;">${data.kls}</span>
-                        </div>
-                        <div style="font-weight:600; font-size:0.9rem; color:#444; margin-top:5px;">📅 ${data.hri} | ⏰ ${data.jam}</div>
-                        <div style="color:#666; font-size:0.85rem;">📖 ${data.mapel}</div>
-                    </div>`;
-            });
-        } else {
-            resultDiv.innerHTML = '<p style="text-align:center; padding:15px; color:#333;">Data tidak ditemukan...</p>';
-        }
+        filtered.forEach(data => {
+            resultDiv.innerHTML += `
+                <div class="result-card">
+                    <div style="display:flex; justify-content:space-between;">
+                        <span style="font-weight:bold; color:#764ba2;">${data.guru}</span>
+                        <span style="background:#764ba2; color:white; padding:2px 10px; border-radius:15px; font-size:0.7rem;">${data.kls}</span>
+                    </div>
+                    <div style="font-size:0.9rem; margin-top:5px;">📅 ${data.hri} | ⏰ ${data.jam}</div>
+                    <div style="color:#666; font-size:0.85rem;">📖 ${data.mapel}</div>
+                </div>`;
+        });
     }
 
-    // Inisialisasi
     updateLiveStatus();
     setInterval(updateLiveStatus, 30000);
-
 </script>
-
 </body>
 </html>
