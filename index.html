@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Jadwal - SMK Negeri 1 Maluku Tengah</title>
+    <title>Portal Jadwal - SMKN 1 Maluku Tengah</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --glass: rgba(255, 255, 255, 0.2);
+            --glass-heavy: rgba(255, 255, 255, 0.35);
+            --accent: #ffeb3b;
+            --live: #4ade80;
+            --break: #f87171;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             min-height: 100vh;
             padding: 20px;
-            animation: gradientShift 15s ease infinite;
-            background-size: 400% 400%;
+            color: white;
         }
 
         @keyframes gradientShift {
@@ -26,459 +31,366 @@
             100% { background-position: 0% 50%; }
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1000px; margin: 0 auto; }
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: fadeInDown 0.8s ease;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .header h1 {
-            color: white;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            color: rgba(255,255,255,0.9);
-            font-size: 1.1rem;
-        }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 2.2rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.2); }
 
         .back-button {
             display: inline-block;
-            margin-bottom: 30px;
-            padding: 12px 24px;
-            background: rgba(255,255,255,0.2);
+            margin-bottom: 25px;
+            padding: 10px 20px;
+            background: var(--glass);
             backdrop-filter: blur(10px);
-            border: 2px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.3);
             border-radius: 50px;
             color: white;
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s ease;
-            animation: fadeIn 1s ease;
+            font-size: 0.9rem;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .back-button:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateX(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .grade-section {
+        /* SEARCH BOX */
+        .search-box {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.3);
             margin-bottom: 30px;
-            animation: fadeInUp 0.8s ease;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .search-input {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: none;
+            outline: none;
+            background: white;
+            color: #333;
+            font-size: 1rem;
         }
 
-        .dropdown-header {
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 20px;
-            padding: 20px 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        #searchContainer { margin-top: 20px; display: none; }
+        .result-card {
+            background: white;
+            color: #333;
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            border-left: 6px solid #764ba2;
         }
 
-        .dropdown-header:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        /* LIVE UI */
+        .now-teaching {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            padding: 12px;
+            background: rgba(0,0,0,0.25);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .dropdown-header.active {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            background: rgba(255,255,255,0.3);
-        }
-
-        .grade-title {
-            color: white;
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        .live-tag {
+            color: var(--live);
+            font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 5px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 4px;
         }
 
-        .dropdown-icon {
-            color: white;
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
+        .pulse {
+            width: 8px; height: 8px;
+            background: var(--live);
+            border-radius: 50%;
+            animation: pulse-animation 1.5s infinite;
         }
 
-        .dropdown-icon.rotated {
-            transform: rotate(180deg);
+        @keyframes pulse-animation {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
         }
 
-        .dropdown-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease;
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255,255,255,0.2);
-            border-top: none;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-        }
-
-        .dropdown-content.show {
-            max-height: 2000px;
-            padding: 20px;
-        }
-
+        /* GRID CLASS */
         .class-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
+            margin-top: 20px;
         }
 
         .class-card {
-            background: rgba(255,255,255,0.15);
+            background: var(--glass);
             backdrop-filter: blur(10px);
+            padding: 25px;
             border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            border: 2px solid rgba(255,255,255,0.2);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.2);
+            text-decoration: none;
+            color: white;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             position: relative;
             overflow: hidden;
         }
 
-        .class-card::before {
-            content: '';
+        .class-card::after {
+            content: "Klik untuk Jadwal Lengkap →";
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            transform: scale(0);
-            transition: transform 0.6s ease;
+            bottom: 0;
+            right: 0;
+            background: var(--accent);
+            color: #333;
+            font-size: 0.65rem;
+            padding: 2px 10px;
+            border-radius: 10px 0 0 0;
+            font-weight: bold;
+            opacity: 0.8;
         }
 
-        .class-card:hover::before {
-            transform: scale(1);
+        .class-card:hover { 
+            background: var(--glass-heavy); 
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
-        .class-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            border-color: rgba(255,255,255,0.5);
-            background: rgba(255,255,255,0.25);
-        }
+        .class-name { font-size: 1.5rem; font-weight: bold; display: block; }
+        .class-desc { font-size: 0.9rem; opacity: 0.8; }
 
-        .class-card.active {
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(33, 150, 243, 0.3));
-            border-color: rgba(76, 175, 80, 0.6);
-        }
-
-        .class-card.active::after {
-            content: '✓ Tersedia';
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(76, 175, 80, 0.8);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
-        .class-card.inactive {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .class-card.inactive::after {
-            content: 'Segera Hadir';
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 193, 7, 0.8);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
-        .class-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-        }
-
-        .class-description {
-            color: rgba(255,255,255,0.9);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        .icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .grade-title {
-                font-size: 1.4rem;
-            }
-
-            .class-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 15px;
-            }
-
-            .class-card {
-                padding: 20px;
-            }
-
-            .class-name {
-                font-size: 1.2rem;
-            }
-
-            .dropdown-header {
-                padding: 15px 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .class-grid {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="https://alexbahy-tech.github.io/smartkurikulumsmkn1mt/" class="back-button">← Kembali ke SmartKurikulum Center</a>
-        
-        <div class="header">
-            <h1>📚 Portal Jadwal Pelajaran</h1>
-            <p>SMK Negeri 1 Maluku Tengah</p>
-        </div>
 
-        <!-- Kelas X -->
-        <div class="grade-section">
-            <div class="dropdown-header" onclick="toggleDropdown('grade10')">
-                <div class="grade-title">
-                    <span>🎓</span>
-                    <span>Kelas X (Sepuluh)</span>
-                </div>
-                <span class="dropdown-icon" id="icon-grade10">▼</span>
-            </div>
-            <div class="dropdown-content" id="grade10">
-                <div class="class-grid">
-                    <div class="class-card active" onclick="openSchedule('https://alexbahy-tech.github.io/jadwal-xmplb/')">
-                        <div class="icon">🎯</div>
-                        <div class="class-name">X MPLB</div>
-                        <div class="class-description">Manajemen Perkantoran dan Layanan Bisnis</div>
-                    </div>
-                    <div class="class-card active" onclick="openSchedule('https://alexbahy-tech.github.io/jadwal-xakl/')">
-                        <div class="icon">💼</div>
-                        <div class="class-name">X AKL</div>
-                        <div class="class-description">Akuntansi dan Keuangan Lembaga</div>
-                    </div>
-                     <div class="class-card active" onclick="openSchedule('https://alexbahy-tech.github.io/jadwal-x-pms/')">
-                        <div class="icon">🛍️</div>
-                        <div class="class-name">X PMS</div>
-                        <div class="class-description">Pemasaran</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">🚢</div>
-                        <div class="class-name">X ULP</div>
-                        <div class="class-description">Usaha Layanan Pariwisata</div>
-                    </div>
-                      <div class="class-card active" onclick="openSchedule('https://alexbahy-tech.github.io/jadwal-x-ulp/)">
-                        <div class="icon">🌐</div>
-                        <div class="class-name">X TJKT 1</div>
-                        <div class="class-description">Teknik Jaringan Komputer dan Telekomunikasi</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">🌐</div>
-                        <div class="class-name">X TJKT 2</div>
-                        <div class="class-description">Teknik Jaringan Komputer dan Telekomunikasi</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">⚡</div>
-                        <div class="class-name">X TK 1</div>
-                        <div class="class-description">Teknik Ketenagalistrikan</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">⚡</div>
-                        <div class="class-name">X TK 2</div>
-                        <div class="class-description">Teknik Ketenagalistrikan</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="container">
+    <a href="https://alexbahy-tech.github.io/smartkurikulumsmkn1mt/" class="back-button">← Kembali ke Center</a>
 
-        <!-- Kelas XI -->
-        <div class="grade-section">
-            <div class="dropdown-header" onclick="toggleDropdown('grade11')">
-                <div class="grade-title">
-                    <span>🎓</span>
-                    <span>Kelas XI (Sebelas)</span>
-                </div>
-                <span class="dropdown-icon" id="icon-grade11">▼</span>
-            </div>
-            <div class="dropdown-content" id="grade11">
-                <div class="class-grid">
-                    <div class="class-card inactive">
-                        <div class="icon">🎯</div>
-                        <div class="class-name">XI MPLB</div>
-                        <div class="class-description">Manajemen Perkantoran dan Layanan Bisnis</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">💼</div>
-                        <div class="class-name">XI AKL</div>
-                        <div class="class-description">Akuntansi dan Keuangan Lembaga</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">🛍️</div>
-                        <div class="class-name">XI PMS</div>
-                        <div class="class-description">Pemasaran</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">🚢</div>
-                        <div class="class-name">XI ULP</div>
-                        <div class="class-description">Usaha Layanan Pariwisata</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">🌐</div>
-                        <div class="class-name">XI TJKT 1</div>
-                        <div class="class-description">Teknik Jaringan Komputer dan Telekomunikasi</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">🌐</div>
-                        <div class="class-name">XI TJKT 2</div>
-                        <div class="class-description">Teknik Jaringan Komputer dan Telekomunikasi</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">⚡</div>
-                        <div class="class-name">XI TK</div>
-                        <div class="class-description">Teknik Ketenagalistrikan</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="header">
+        <h1>📚 Smart Jadwal SMKN 1 MALUKU TENGAH</h1>
+        <p id="realtime-clock">Memuat waktu...</p>
+    </div>
 
-        <!-- Kelas XII -->
-        <div class="grade-section">
-            <div class="dropdown-header" onclick="toggleDropdown('grade12')">
-                <div class="grade-title">
-                    <span>🎓</span>
-                    <span>Kelas XII (Dua Belas)</span>
-                </div>
-                <span class="dropdown-icon" id="icon-grade12">▼</span>
-            </div>
-            <div class="dropdown-content" id="grade12">
-                <div class="class-grid">
-                    <div class="class-card inactive">
-                        <div class="icon">🎯</div>
-                        <div class="class-name">XII MPLB</div>
-                        <div class="class-description">Manajemen Perkantoran dan Layanan Bisnis</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">💼</div>
-                        <div class="class-name">XII AKL</div>
-                        <div class="class-description">Akuntansi dan Keuangan Lembaga</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">🛍️</div>
-                        <div class="class-name">XII PMS</div>
-                        <div class="class-description">Pemasaran</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">🚢</div>
-                        <div class="class-name">XII ULP</div>
-                        <div class="class-description">Usaha Layanan Pariwisata</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">🌐</div>
-                        <div class="class-name">XII TJKT</div>
-                        <div class="class-description">Teknik Jaringan Komputer dan Telekomunikasi</div>
-                    </div>
-                    <div class="class-card inactive">
-                        <div class="icon">⚡</div>
-                        <div class="class-name">XII TK</div>
-                        <div class="class-description">Teknik Ketenagalistrikan</div>
-                    </div>
-                </div>
-            </div>
+    <div class="search-box">
+        <input type="text" id="mainSearch" class="search-input" placeholder="Cari Guru / Mata Pelajaran..." onkeyup="performSearch()">
+        <div id="searchContainer">
+            <h4 style="margin: 20px 0 10px 0; color: var(--accent);">🔍 Hasil Pencarian Jadwal:</h4>
+            <div id="searchResults"></div>
         </div>
     </div>
 
-    <script>
-        function toggleDropdown(gradeId) {
-            const content = document.getElementById(gradeId);
-            const icon = document.getElementById('icon-' + gradeId);
-            const header = content.previousElementSibling;
+    <div class="class-grid">
+        <a href="https://alexbahy-tech.github.io/jadwal-xmplb/" class="class-card">
+            <div>
+                <span class="class-name">X MPLB</span>
+                <span class="class-desc">Manajemen Perkantoran</span>
+            </div>
+            <div class="now-teaching" id="live-XMPLB">Mengecek jadwal...</div>
+        </a>
+
+        <a href="https://alexbahy-tech.github.io/jadwal-xakl/" class="class-card">
+            <div>
+                <span class="class-name">X AKL</span>
+                <span class="class-desc">Akuntansi</span>
+            </div>
+            <div class="now-teaching" id="live-XAKL">Mengecek jadwal...</div>
+        </a>
+
+        <a href="https://alexbahy-tech.github.io/jadwal-xpms/" class="class-card">
+            <div>
+                <span class="class-name">X PMS</span>
+                <span class="class-desc">Pemasaran</span>
+            </div>
+            <div class="now-teaching" id="live-XPMS">Mengecek jadwal...</div>
+        </a>
+    </div>
+</div>
+
+<script>
+    const database = [
+        // --- DATA LENGKAP X MPLB ---
+        { hri: "Senin", kls: "X MPLB", jam: "07:30 - 09:30", mapel: "Dasar Program Keahlian MPLB", guru: "B.W. Tanamal, S.Pd" },
+        { hri: "Senin", kls: "X MPLB", jam: "09:30 - 10:10", mapel: "Bahasa Inggris", guru: "Yulan Talarima, S.Pd.,Gr" },
+        { hri: "Senin", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Senin", kls: "X MPLB", jam: "10:30 - 11:50", mapel: "Bahasa Inggris", guru: "Yulan Talarima, S.Pd.,Gr" },
+        { hri: "Senin", kls: "X MPLB", jam: "11:50 - 13:10", mapel: "Matematika", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Senin", kls: "X MPLB", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Senin", kls: "X MPLB", jam: "13:30 - 14:10", mapel: "Matematika", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Senin", kls: "X MPLB", jam: "14:10 - 15:30", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Selasa", kls: "X MPLB", jam: "07:30 - 08:50", mapel: "Sejarah", guru: "V. Ruhukail, S.Pd" },
+        { hri: "Selasa", kls: "X MPLB", jam: "08:50 - 10:10", mapel: "Pend. Jasmani & Olahraga", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Selasa", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Selasa", kls: "X MPLB", jam: "10:30 - 11:10", mapel: "Pend. Jasmani & Olahraga", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Selasa", kls: "X MPLB", jam: "11:10 - 13:10", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Selasa", kls: "X MPLB", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Selasa", kls: "X MPLB", jam: "13:30 - 15:30", mapel: "Dasar Program Keahlian", guru: "B.W. Tanamal,S.Pd" },
+        { hri: "Rabu", kls: "X MPLB", jam: "07:30 - 08:50", mapel: "Pendidikan Pancasila", guru: "E.A. Wacanno, S.Pd" },
+        { hri: "Rabu", kls: "X MPLB", jam: "08:50 - 10:10", mapel: "Kokurikuler PJBL", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Rabu", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Rabu", kls: "X MPLB", jam: "10:30 - 11:10", mapel: "Kokurikuler PJBL", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Rabu", kls: "X MPLB", jam: "11:10 - 13:10", mapel: "Dasar Program Keahlian MPLB", guru: "B.W. Tanamal, S.Pd" },
+        { hri: "Rabu", kls: "X MPLB", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Rabu", kls: "X MPLB", jam: "13:30 - 15:30", mapel: "Bahasa Indonesia", guru: "Suharja Duhalim, S.Pd" },
+        { hri: "Kamis", kls: "X MPLB", jam: "07:30 - 09:30", mapel: "Dasar Program Keahlian MPLB", guru: "B.W. Tanamal, S.Pd" },
+        { hri: "Kamis", kls: "X MPLB", jam: "09:30 - 10:10", mapel: "Kokurikuler PJBL", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Kamis", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Kamis", kls: "X MPLB", jam: "10:30 - 11:10", mapel: "Kokurikuler PJBL", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Kamis", kls: "X MPLB", jam: "11:10 - 13:10", mapel: "Pend. Agama (PAI/PAK)", guru: "Budiarto Tahidi / Allen Matinahoruw" },
+        { hri: "Kamis", kls: "X MPLB", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Kamis", kls: "X MPLB", jam: "13:30 - 15:30", mapel: "Seni Budaya (Musik)", guru: "R. A. Ririhena, SM.Gr" },
+        { hri: "Jumat", kls: "X MPLB", jam: "07:30 - 08:50", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
+        { hri: "Jumat", kls: "X MPLB", jam: "08:50 - 10:10", mapel: "Informatika", guru: "Latumeirissa Allcresdo, S.Pd" },
+        { hri: "Jumat", kls: "X MPLB", jam: "10:10 - 10:30", mapel: "ISTIRAHAT", guru: "-", type: "break" },
+        { hri: "Jumat", kls: "X MPLB", jam: "10:30 - 12:30", mapel: "Informatika", guru: "Latumeirissa Allcresdo" },
+
+        // --- DATA LENGKAP X AKL ---
+        { hri: "Senin", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Informatika", guru: "Axl Denis Hallatu, S.Kom" },
+        { hri: "Senin", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Senin", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Senin", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Senin", kls: "X AKL", jam: "11:10 - 12:30", mapel: "Bahasa Indonesia", guru: "Wa Mulina, S.Pd" },
+        { hri: "Senin", kls: "X AKL", jam: "13:30 - 15:30", mapel: "Kokurikuler PJBL", guru: "A. Bahy, S.Pd., M.Pd" },
+        { hri: "Selasa", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Pendidikan Pancasila", guru: "E.A. Wacanno, S.Pd" },
+        { hri: "Selasa", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Selasa", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Selasa", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Selasa", kls: "X AKL", jam: "11:10 - 12:30", mapel: "Dasar Program Keahlian AKL", guru: "Diwanti Wally, A.Md" },
+        { hri: "Selasa", kls: "X AKL", jam: "13:30 - 15:30", mapel: "Matematika", guru: "T.M.A. Kappuw, S.Pd" },
+        { hri: "Rabu", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Projek IPAS", guru: "H.S. Kapressy, S.Pd., M.Pd" },
+        { hri: "Rabu", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Seni Budaya (Seni Musik)", guru: "R. A. Ririnena, SM.Gr" },
+        { hri: "Rabu", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Rabu", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Seni Budaya (Seni Musik)", guru: "R. A. Ririnena, SM.Gr" },
+        { hri: "Rabu", kls: "X AKL", jam: "11:10 - 12:30", mapel: "Dasar Program Keahlian AKL", guru: "M. Kunu, S.Pd" },
+        { hri: "Rabu", kls: "X AKL", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Rabu", kls: "X AKL", jam: "13:30 - 15:30", mapel: "Bahasa Inggris", guru: "A. Bahy, S.Pd., M.Pd" },
+        { hri: "Kamis", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Kokurikuler PJBL", guru: "A. Bahy, S.Pd., M.Pd" },
+        { hri: "Kamis", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Dasar Program Keahlian AKL", guru: "Diwanti Wally, A.Md" },
+        { hri: "Kamis", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Kamis", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Dasar Program Keahlian AKL", guru: "Diwanti Wally, A.Md" },
+        { hri: "Kamis", kls: "X AKL", jam: "11:10 - 12:30", mapel: "Pendidikan Agama", guru: "Budiarto Tahidi / Allen Matinahoruw" },
+        { hri: "Kamis", kls: "X AKL", jam: "13:30 - 15:30", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
+        { hri: "Jumat", kls: "X AKL", jam: "07:30 - 08:50", mapel: "Sejarah", guru: "V. Ruhukail, S.Pd" },
+        { hri: "Jumat", kls: "X AKL", jam: "08:50 - 10:10", mapel: "Dasar Program Keahlian AKL", guru: "M. Kunu, S.Pd" },
+        { hri: "Jumat", kls: "X AKL", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Jumat", kls: "X AKL", jam: "10:30 - 11:10", mapel: "Dasar Program Keahlian AKL", guru: "M. Kunu, S.Pd" },
+
+        // --- DATA LENGKAP X PMS ---
+        { hri: "Senin", kls: "X PMS", jam: "07:30 - 10:10", mapel: "DPK PMS (Wawasan Dunia Kerja)", guru: "H. Salampessy, SE" },
+        { hri: "Senin", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Senin", kls: "X PMS", jam: "10:30 - 12:30", mapel: "Bahasa Inggris", guru: "Ch. Elias, S.Pd., M.Pd" },
+        { hri: "Senin", kls: "X PMS", jam: "12:30 - 13:10", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
+        { hri: "Senin", kls: "X PMS", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Senin", kls: "X PMS", jam: "13:30 - 15:30", mapel: "Muatan Lokal (Membatik)", guru: "J. Resiloy" },
+        { hri: "Selasa", kls: "X PMS", jam: "07:30 - 08:50", mapel: "Seni Musik", guru: "R.A. Ririhena" },
+        { hri: "Selasa", kls: "X PMS", jam: "08:50 - 10:10", mapel: "Kokurikuler PJBL", guru: "B.W. Tanamal, S.Pd" },
+        { hri: "Selasa", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Selasa", kls: "X PMS", jam: "10:30 - 11:10", mapel: "Kokurikuler PJBL", guru: "B.W. Tanamal, S.Pd" },
+        { hri: "Selasa", kls: "X PMS", jam: "11:10 - 13:10", mapel: "Bahasa Indonesia", guru: "Suharja Duhalim, S.Pd" },
+        { hri: "Selasa", kls: "X PMS", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Selasa", kls: "X PMS", jam: "13:30 - 15:30", mapel: "Informatika", guru: "S. Pattiradjawane" },
+        { hri: "Rabu", kls: "X PMS", jam: "07:30 - 08:50", mapel: "Kokurikuler PJBL", guru: "B.W. Tanamal, S.Pd" },
+        { hri: "Rabu", kls: "X PMS", jam: "08:50 - 10:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Rabu", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Rabu", kls: "X PMS", jam: "10:30 - 11:10", mapel: "Penjasorkes", guru: "O.A. Lawalata, S.Pd" },
+        { hri: "Rabu", kls: "X PMS", jam: "11:10 - 12:30", mapel: "Pendidikan Pancasila", guru: "E.A. Wacanno, S.Pd" },
+        { hri: "Rabu", kls: "X PMS", jam: "12:30 - 13:10", mapel: "DPK PMS (Kecakapan Kerja)", guru: "Kalsum Mony, S.Pd" },
+        { hri: "Rabu", kls: "X PMS", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Rabu", kls: "X PMS", jam: "13:30 - 15:30", mapel: "DPK PMS (Lanjutan)", guru: "Kalsum Mony, S.Pd" },
+        { hri: "Kamis", kls: "X PMS", jam: "07:30 - 10:10", mapel: "DPK PMS (K3 & Budaya Kerja)", guru: "D. Simaela, S.Pd" },
+        { hri: "Kamis", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Kamis", kls: "X PMS", jam: "10:30 - 12:30", mapel: "Matematika", guru: "R. E. Ruhukail, S.Pd., M.Pd" },
+        { hri: "Kamis", kls: "X PMS", jam: "12:30 - 13:10", mapel: "Projek IPAS", guru: "Boki Tuasikal, S.Pd" },
+        { hri: "Kamis", kls: "X PMS", jam: "13:10 - 13:30", mapel: "ISTIRAHAT 2", guru: "-", type: "break" },
+        { hri: "Kamis", kls: "X PMS", jam: "13:30 - 14:50", mapel: "Projek IPAS (Lanjutan)", guru: "Boki Tuasikal, S.Pd" },
+        { hri: "Jumat", kls: "X PMS", jam: "07:30 - 10:10", mapel: "Pendidikan Agama", guru: "Djurniaty / F.L. Pelletimu" },
+        { hri: "Jumat", kls: "X PMS", jam: "10:10 - 10:30", mapel: "ISTIRAHAT 1", guru: "-", type: "break" },
+        { hri: "Jumat", kls: "X PMS", jam: "10:30 - 11:50", mapel: "Projek IPAS", guru: "Boki Tuasikal, S.Pd" }
+    ];
+
+    function updateLiveStatus() {
+        const now = new Date();
+        const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const currentDay = days[now.getDay()];
+        
+        const h = now.getHours().toString().padStart(2, '0');
+        const m = now.getMinutes().toString().padStart(2, '0');
+        const timeString = `${h}:${m}`;
+        
+        document.getElementById('realtime-clock').innerText = `${currentDay}, ${timeString} WIT`;
+
+        const classes = ["X MPLB", "X AKL", "X PMS"];
+
+        classes.forEach(klsName => {
+            const displayId = "live-" + klsName.replace(/\s/g, '');
+            const displayElement = document.getElementById(displayId);
             
-            content.classList.toggle('show');
-            icon.classList.toggle('rotated');
-            header.classList.toggle('active');
-        }
-
-        function openSchedule(url) {
-            window.location.href = url;
-        }
-
-        // Add stagger animation to sections
-        document.addEventListener('DOMContentLoaded', function() {
-            const sections = document.querySelectorAll('.grade-section');
-            sections.forEach((section, index) => {
-                section.style.animation = `fadeInUp 0.6s ease ${index * 0.2}s both`;
+            const activeLesson = database.find(item => {
+                if (item.hri !== currentDay || item.kls !== klsName) return false;
+                const [start, end] = item.jam.split(" - ");
+                return timeString >= start && timeString <= end;
             });
+
+            if (activeLesson) {
+                if (activeLesson.type === "break") {
+                    displayElement.innerHTML = `
+                        <div class="live-tag" style="color:#f87171">☕ ISTIRAHAT</div>
+                        <strong style="color:#f87171">${activeLesson.mapel}</strong>`;
+                } else {
+                    displayElement.innerHTML = `
+                        <div class="live-tag"><span class="pulse"></span> SEDANG BERLANGSUNG</div>
+                        <strong>${activeLesson.mapel}</strong><br>
+                        <small>👤 ${activeLesson.guru}</small>`;
+                }
+            } else {
+                displayElement.innerHTML = `<span style="opacity:0.6;">Tidak ada KBM saat ini</span>`;
+            }
         });
-    </script>
+    }
+
+    function performSearch() {
+        const query = document.getElementById('mainSearch').value.toLowerCase();
+        const container = document.getElementById('searchContainer');
+        const resultDiv = document.getElementById('searchResults');
+
+        if (query.length < 2) {
+            container.style.display = 'none';
+            return;
+        }
+
+        const filtered = database.filter(item => 
+            item.guru.toLowerCase().includes(query) ||
+            item.mapel.toLowerCase().includes(query) ||
+            item.kls.toLowerCase().includes(query)
+        );
+
+        container.style.display = 'block';
+        resultDiv.innerHTML = '';
+
+        if (filtered.length > 0) {
+            filtered.forEach(data => {
+                resultDiv.innerHTML += `
+                    <div class="result-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-weight:bold; color:#764ba2;">${data.guru}</span>
+                            <span style="background:#764ba2; color:white; padding:2px 10px; border-radius:15px; font-size:0.7rem;">${data.kls}</span>
+                        </div>
+                        <div style="font-weight:600; font-size:0.9rem; color:#444; margin-top:5px;">📅 ${data.hri} | ⏰ ${data.jam}</div>
+                        <div style="color:#666; font-size:0.85rem;">📖 ${data.mapel}</div>
+                    </div>`;
+            });
+        } else {
+            resultDiv.innerHTML = '<p style="text-align:center; padding:15px; color:#333;">Data tidak ditemukan...</p>';
+        }
+    }
+
+    // Inisialisasi
+    updateLiveStatus();
+    setInterval(updateLiveStatus, 30000);
+
+</script>
+
 </body>
 </html>
-
